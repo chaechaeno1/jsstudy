@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<input type="text" id="myTxt" value="메롱">
+<script>
+    
+//값은 '메롱'으로 출력
+// .value 가 문자열이기 때문에 바뀌지 않은 것 
+// document.querySelector("#myTxt").value; -> 원시타입
+
+//var check = document.querySelector("#myTxt").value; // call by value
+//check = "안메롱";
+
+var check = document.querySelector("#myTxt"); // call by reference
+check.value = "안메롱";
+
+
+// ★하지 말아야 할 것..!
+// 직접 id를 가져다 쓰는 코딩은 코딩양이 많아지면 심각하게 가독성을 훼손하므로
+// 짧은 샘플 코드를 만들때만 사용함당!
+myTxt.value = "요것도 되지용~";
+
+
+
+
+
+//동적변환은 눈에 보이지 않게 이루어진다.
+//메롱은 true 값으로 바뀌어 alert창이 출력된다.
+/* 
+    var ck = "메롱";
+    if(ck){ //조건은 boolean 타입이어야 해서 안보이게 boolean으로 바뀜
+        alert("흥치피"); 
+    }
+     */
+
+
+    //문자열 중에 false가 되는 것은?
+ /*    
+    var ck = ""; //문자열은 빈 공백을 제외한 모든게 true로 바뀜
+    if(ck){ //조건은 boolean 타입이어야 해서 안보이게 boolean으로 바뀜
+        alert("흥치피"); 
+    }else{
+        alert("false");
+    }
+     */
+
+    //숫자는?  
+/*     
+    var ck = 0; // 숫자(number)는 0만 false 이다.
+    if(ck){ //조건은 boolean 타입이어야 해서 안보이게 boolean으로 바뀜
+        alert("흥치피"); 
+    }else{
+        alert("false");
+    }
+     */
+
+
+
+    //빈배열, 빈 객체는? 
+/*     
+    var ck = []; // 객체는 무조건 true
+    if(ck){ //조건은 boolean 타입이어야 해서 안보이게 boolean으로 바뀜
+        alert("흥치피"); 
+    }else{
+        alert("false");
+    }
+     */
+    
+    //요즘 많이 쓰이는 스타일
+    // var ck = true; (예전방식)
+/*     var ck = !0; //true;
+    
+    if(!ck){ //조건은 boolean 타입이어야 해서 안보이게 boolean으로 바뀜
+        alert("흥치피"); 
+    }else{
+        alert("false");
+    }
+ */
+
+</script>
