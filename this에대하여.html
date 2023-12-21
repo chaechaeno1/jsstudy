@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+// this? 이것? 나? 대명사
+
+var f_ck = function(){
+    console.log("체크 : " , this); // 
+}
+
+//f_ck();
+//window.f_ck();
+
+var hcy = {name : "홍창용"};
+hcy.check = f_ck; //f_ck는 함수이므로, 객체로 여긴다. -> 참조
+
+hcy.check();
+
+
+
+
+// 위의 방법은 너무 힘들당! 못쓰겠당!
+
+// this? 이것? 나? 대명사
+// call, apply, bind란 함수 객체의 메소드를 추가로 제공
+// 개발자가 직접 this를 강제 제어할 수 있게 해줘서 칭찬받음~,~
+
+
+
+
+
+
+</script>
