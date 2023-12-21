@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<button id="myBtn">눌러방~</button>
+<script>
+
+/* 
+// document.write 넘 길어 줄여쓰고 싶어서 만듦
+const myPrint = function(pMsg){
+    document.write(pMsg);
+}
+
+ */
+
+//var myPrint = document.write; //참조를 이용
+var myPrint = document.write.bind(document); //참조를 이용
+
+
+//document.write("<h1>나야 나!</h1>");
+//document.write("<h1>넌 누구얌?</h1>");
+
+
+window.myPrint("<h1>나야 나!</h1>");
+myPrint("<h1>넌 누구얌?</h1>");
+
+var myBtn = document.querySelector("#myBtn");
+
+const f_click = function(pName){
+    document.write("<h1>난 최고의 프로그래머당~!</h1>");
+    console.log("체크 : ", this);
+    //alert(`${pName} 안농 잘 지냈어~?`);
+}
+
+//이벤트 등록!!
+//bind는 call하고 문법은 똑같음!
+//bind는 내부적으로 매개변수가 들어간 함수를 만들고, 
+//그 함수의 포인터 FP(함수 이름의 의미)를 되돌려줌
+//Function Pointer
+
+myBtn.addEventListener("click",f_click.bind({name : "나 민채"},"흥민채"));
+//myBtn.addEventListener("click",f_click.call({name : "나 민채"},"흥민채"));
+// f_click()로 작성하면 버튼을 누르기 전에 함수가 먼저 실행됨!!
+// () 을 붙이면 함수 호출하는 것.., 함수 이름만 작성할 것!
+
+
+
+
+</script>
