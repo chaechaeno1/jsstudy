@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<button onclick="f_ajax()">아작스 콜!</button>
+
+<hr/>
+
+<div id="disp"></div>
+
+
+<script>
+//ajax는 손에 달고 살아야 함!
+//2000년대 초반 인터넷 사용의 급증(쇼핑몰 등 전자상거래 급증)
+//더 빠른 성능의 대안 필요.
+//페이지의 일부분만 바꿀려고 해도, 전체 페이지를 다시 읽는 불편함이 눈에 들어옴!
+//그래서 ajax등장! 
+//그러나.. 개발자들이 비동기를 믿어주지 않음(그런게 되겠어???????? 말도안됨)
+//2004년경 구글이 구글맵, 구글메일 등에서 아작스를 성공적으로 시연!
+//그 이후로, 아작스를 못쓰면 개발자가 아니다 라는 인식...
+
+//ajax(Asynchronous JAvaScript and XML, 에이잭스, 아작스..., 비동기 자바스크립트 XML)
+//(면접질문!!) 동기 vs 비동기의 차이
+// 동기는 혼자서 가능 (순서 중요)
+// 비동기?? (혼자는 못함, 여러명이 동시에 작업 진행)
+// ex)
+// A -> 주문 -> 개인작업 -> 커피 픽업
+// B -> 커피제조 -> 픽업요청 -> 진동벨
+// java Thread의 경우, 이전에는 CPU가 1개였기 때문에 불필요했음
+// 현재는 CPU가 여러개이므로, 멀티 Thread의 개념이 중요해짐
+
+
+/* var xhr = new XMLHttpRequest(); //통신 대신 해줄 아저씨 생성
+//xhr.open("메소드","갔다올장소URL","비동기여부"); //시킬 일 지정
+//xhr.open("get","http://localhost:8272/jsstudy/AJAX/data.csv","비동기여부"); //절대경로
+xhr.open("get","/jsstudy/AJAX/data.csv",true); //절대경로
+//xhr.open("get","data.csv","비동기여부"); //위치가 동일하므로 data.csv.. 홈페이지 제작할때만..(상대경로방식)
+// '/'로 시작하면 절대경로, '/'없으면 상대경로, 절대경로로 쓰는 습관!
+
+//공유자원(Shared)이 하나밖에 없는 경우, 비동기 방식으로 진행할 수 없다.
+
+// 일의 종료 여부를 알아야 함, 이벤트 등록
+xhr.onreadystatechange = function(){
+    // 상태값 0,1,2,3,4가 있음, 중간 상태는 관심 없고, 끝났는지만 관심!!
+    if(xhr.readyState == 4 && xhr.status == 200){ //양방향에서 모두 OK한 것
+        console.log("항상 체크: ", xhr.responseText);
+    }
+};
+
+xhr.send(); //실행 */
+
+/* 
+var xhr = new XMLHttpRequest();
+xhr.open("get", "/jsstudy/AJAX/data.csv",false);
+xhr.onreadystatechange = function(){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        alert("완전 메롱~");
+        console.log("항상 체크 : " + xhr.responseText);
+    }
+};
+xhr.send();
+
+alert("메롱~");
+
+//console.log("체크",xhr.responseText);
+
+ */
+
+
+// var xhr = new XMLHttpRequest();
+// xhr.open("get", "/jsstudy/AJAX/data.csv",true);
+// xhr.onreadystatechange = function(){
+//     if(xhr.readyState == 4 && xhr.status == 200){
+//         //alert("완전 메롱~");
+//         console.log("항상 체크 : ",xhr.responseText);
+//     }
+// };
+// xhr.send();
+
+//alert("메롱~");
+
+
+/* 
+//나쁜 잔머리, 귀차니즘의 끝판왕..! -- 쓰지마!!!!!!!!!!!!!!!!!!!!
+setTimeout(function(){
+    console.log("체크 : ",xhr.responseText,"한한한");
+},500);
+
+*/
+
+
+//------------------------------------------------------------------------------------
+// 아작스 변수를 전역변수로 사용하지 않는다!!!
+// 오직 한가지 일만 시킨다?, 그런 일은 프로그램에 없다고 보는게 타당...
+// 항상 함수 안에서 지역 변수로 활용하는게 포인트!
+// var xhr = new XMLHttpRequest(); -> 지역변수로 사용하기!
+
+
+// get방식과 서버의 정적 파일만 가져오는 것까지만 했음..
+// post/put/delete와 서버의 동적결과 리턴은 아직 하지 않았음!
+
+// function f_ajax(){
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("get", "/jsstudy/AJAX/data.csv",true);
+//     xhr.onreadystatechange = function(){
+//         if(xhr.readyState == 4 && xhr.status == 200){
+//             //alert("완전 메롱~");
+//             console.log("항상 체크 : ",xhr.responseText);
+//         }
+//     };
+//     xhr.send();
+// };
+//------------------------------------------------------------------------------------
+
+// DRY(Do not Repeat Yourself) : 원칙 반복하지 말아라!
+// 비동기에서는 Callback 함수 사용 많음!
+
+
+var $ = {}; //네임스페이스용 빈 객체 생성
+
+
+$.ajax = function(pConfig){
+    var xhr = new XMLHttpRequest();
+    xhr.open(pConfig.method, pConfig.url,true);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4 && xhr.status == 200){
+            //alert("완전 메롱~");
+            //console.log("항상 체크 : ",xhr.responseText);
+            //결과처리할 함수
+            if(pConfig.dataType == "json"){
+                pConfig.success(JSON.parse(xhr.responseText));
+            }else{
+                pConfig.success(xhr.responseText);
+            }
+        }
+    };
+    xhr.send();
+};
+
+
+$.ajax({
+    method :"get",
+    url : "/jsstudy/AJAX/data.csv",
+    dataType : "text", //csv는 json 변환 안됨
+    success:function(rslt){
+        console.log("넘겨받은 결과는?", rslt);
+    }
+});
+
+$.ajax({
+    method :"get",
+    url : "/jsstudy/AJAX/data.json",
+    dataType:"json",
+    success:function(rslt){
+        console.log("넘겨받은 결과는?", rslt);
+
+        //넘겨받은 결과값으로 테이블을 후딱 맹글어 보시옹, id=disp에 뿌리시오.
+        const d1 = document.querySelector("#disp");
+
+        var tblStr = "<table border=1>";
+        tblStr += "<tr><th>이름</th><th>나이</th><th>별명</th></tr>";
+        for(var i=0; i<rslt.length; i++){
+            var rslts = rslt[i];
+            tblStr += `<tr>
+                        <td>${rslts.name}</td>
+                        <td>${rslts.age}</td>
+                        <td>${rslts.alias}</td>
+                        </tr>`;
+        }
+        tblStr += "</table>";
+        
+        d1.innerHTML = tblStr;
+
+
+
+
+    }
+});
+
+
+
+
+//매개 변수가 많아졌을 때 해결하는 방법
+/* function f_check(pSet){
+    console.log("체크:",pSet);
+};
+
+f_check({
+    "name":"로제",
+    "role":"메인보컬",
+    "company":"YG"
+});
+ */
+
+
+
+
+// 서버에서 dataType을 만들어 주는 것이 아니라, 기본적으로 문자열로 던지기 때문에
+// dataType을 설정해주어야 한다.
+// dataType : 서버에서 어떤 타입을 받을 것인지를 의미합니다. 
+// 생략했을경우에는 jQuery가 MIME타입들을 보면서 자동으로 결정합니다.
+ 
+
+
+
+
+/* f_ajax("get","/jsstudy/AJAX/data.csv",function(pRslt){
+    console.log("콜백함수 : ",pRslt);
+});
+
+
+//★ JSON.parse 중요!
+f_ajax("get","/jsstudy/AJAX/data.json",function(pRslt){
+    console.log("콜백함수 : ",JSON.parse(pRslt));
+}); */
+
+//------------------------------------------------------------------------------------
+
+
+
+
+
+
+</script>
