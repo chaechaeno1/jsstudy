@@ -60,7 +60,7 @@
     const myForm = document.querySelector("#myForm");
 
     myForm.addEventListener("submit", function(){
-        event.preventDefault(); // 그냥 submit built-in 막기
+        event.preventDefault(); // 그냥 submit built-in(이벤트막기) 막기
         if(sAge > 30){
             alert("앙돼용~!~! 입장 불가~!");
             return; // 종료
