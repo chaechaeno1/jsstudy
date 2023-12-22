@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<input type="text" id="schWord" value="">
+<button onclick="f_schImg()">찾기!</button> <br/>
+<div id="disp"></div>
+
+
+<script>
+
+    //찾은걸 또 찾게하지 않기위해 전역변수로 설정
+    //html에 고정적으로 있는 거라면..!
+    const myDisp = document.querySelector("#disp");
+    const mySchWord = document.querySelector("#schWord");
+
+    const preURL = "https://www.flickr.com/services/feeds/photos_public.gne?tags=";
+    const postURL = "&format=json";
+
+    function f_schImg(){
+        var schURL = `${preURL}${mySchWord.value}${postURL}`; //검색어가 들어간 완성된 URL
+        var myScript = document.createElement("script"); //스크립트 태그 생성
+        myScript.src = schURL;
+        document.head.appendChild(myScript); //body에 붙여도 상관없음
+
+    };
+
+    // 불리는 함수를 미리 만들어 둔다. (그래야 불러와짐)
+    function jsonFlickrFeed(pData){
+        console.log("체크:",pData); // 잘 넘겨 받을까??
+        var imgArr = pData.items;
+        myDisp.innerHTML = ""; //기존 내용 지우기. (제이쿼리에서 empty 용도), id=list에 있는거 지우기!
+
+        for(var i=0; i<imgArr.length; i++){
+            var imgURL = imgArr[i].media.m;
+            console.log("체크체크 : ",imgURL);
+
+            var img = document.createElement("img"); //img 태그 생성(메모리에!)
+            img.src = imgURL;
+
+            myDisp.appendChild(img); //이걸 해야 눈에 보인다!
+            
+
+
+        }
+    }
+</script>
+
+<!-- <script src="https://www.flickr.com/services/feeds/photos_public.gne?tags=cat&format=json"></script> -->
+<script src="https://www.flickr.com/services/feeds/photos_public.gne?tags=dog&format=json"></script>

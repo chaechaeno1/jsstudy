@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<style>
+    #myDrop{
+        width: 300px;
+        height: 300px;
+        border: 2px solid pink;
+        overflow: auto; /* 영역 넘어갈 때 자동으로 스크롤바 생성 */
+    }
+</style>
+
+
+
+<div id="myDrop" ondragover="f_over()" ondrop="f_drop()"></div>
+
+<script>
+    const myDrop = document.querySelector("#myDrop");
+
+    //dragover, drop 2개를 막아줘야 브라우저가 이미지 여는 걸 막을 수 있다!
+    function f_over(){
+        event.preventDefault();
+    }
+
+
+    // 파일 1개만 읽는 함수
+    function f_readOne(pFile){
+        var fileReader = new FileReader(); //파일 읽어주는 아저씨 생성
+        fileReader.readAsDataURL(pFile); // 읽으세요!
+        fileReader.onload = function(){ //다 읽었다면 결과를 ...
+            console.log(fileReader.result); // console에 찍어주세요!
+            
+            var myImg = document.createElement("img");
+            myImg.src = fileReader.result;
+            myImg.style.width = "50%";
+            myImg.style.height = "50%";
+    
+            myDrop.appendChild(myImg); // 문서에 추가    
+            myDrop.scrollTo(0,myDrop.scrollHeight); // X,Y (스크롤바 내리기)
+        }
+    }
+    
+
+    //사용자가 마우스 버튼을 놓았을 때 발생
+    function f_drop(){
+        event.preventDefault();
+        console.log("체크 : ",event.dataTransfer.files); //input type files랑 같은 데이터 타입
+        //var dragFile = event.dataTransfer.files[0]; //일단 파일 1개만!
+        var dragFiles = event.dataTransfer.files; //일단 파일 1개만!
+
+        /*
+            반복문 안에 비동기가 들어있어, 머리아프게 할땐
+            반복문 안에 내용을 함수로 처리하면 됨!
+            왜!?
+            함수의 매개변수는 해당 함수 안에서만 존재해서 다른것과 충돌나지 않음
+        */
+
+        for(var i=0;i<dragFiles.length;i++){
+            f_readOne(dragFiles[i]);          
+        }
+        
+    }
+
+    window.addEventListener("dragover",f_over);
+    window.addEventListener("drop",f_over);
+</script>
