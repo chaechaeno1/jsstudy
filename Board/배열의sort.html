@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+//배열 sort 사용법!
+
+//---------------------------------------------------------------------
+/* var testArr = [1, 5, 6, 3, 2];
+
+//console.log(testArr.sort()); //배열 출력
+//console.log(testArr.reverse()); //일반적인 뒤집기
+
+
+testArr.sort(function(a,b){ // sort(콜백함수)
+    //return a-b;
+    //return b-a;
+});
+
+console.log(testArr); */
+//---------------------------------------------------------------------
+
+
+var testArr2 = [
+    {name: "roze", age:25},
+    {name: "jenni", age:26},
+    {name: "risa", age:25},
+    {name: "jisu", age:27},
+];
+
+//alert("roze" - "jenni"); // NaN 출력
+//alert("roze" > "jenni"); //눈으로 확인
+
+testArr2.sort(function(a,b){
+    //console.log("체크 :",a,b); // a와 b에 어떤 값이 오는지 눈으로 확인!
+    //return b.age - a.age;
+    //return b.name - a.name;
+    if(b.name > a.name){
+        return -1;
+    }else{
+        return 1;
+    }
+});
+
+console.log("눈으로 확인 :",testArr2);
+
+
+
+
+
+
+
+
+</script>
