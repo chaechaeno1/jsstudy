@@ -46,6 +46,8 @@
     <div id="myModal">
         <div id="myCont">
             <form action="" method="get">
+                <!-- 사용자에게는 보여줄 필요 없지만, 프로그램 상 필요 -->
+                <input type="hidden" name="n_pid" value="">
                 제목 : <input type="text" name="n_title" value=""><br>
                 <!-- 
                     readonly : 서버전송O
@@ -63,6 +65,9 @@
                 <textarea name="n_cont" id="" cols="30" rows="10" required></textarea><br>
         
                 <input type="button" value="일단닫기" onclick="f_modalClose()">
+                <!-- form태그 안 button은 submit 역할 -> 그래서 type을 지정하는 습관을 들이자! -->
+                <button type="button" onclick="f_modify()">수정</button> 
+                <button type="button" onclick="f_del()">삭제</button>
             </form>
         </div>
     </div>
@@ -70,6 +75,21 @@
     <h1>못생긴 게시판</h1>
     <div id="list"></div>
 <script>
+    function f_modify(){
+        myForm.action="modify_action.html";
+        myForm.submit();    // 전송!
+
+    }
+    
+    function f_del(){
+        myForm.action="delete_action.html";
+        myForm.submit();    // 전송!
+
+    }
+
+
+
+
     const myModal = document.querySelector("#myModal");
     const myForm = document.forms[0]; 
     /* id, name으로 접근해도 되고, 이런식으로 선언해도됨 */
@@ -96,10 +116,22 @@
             //console.log("체크!! : ", schGul);
             if(schGul.pid == pId){// 같다면 찾는 글 맞음
                 console.log("찾았다! :",schGul);
+                myForm.n_pid.value = schGul.pid; // hidden에 숨겨놓기
                 myForm.n_title.value = schGul.title.replaceAll("+"," ");
                 myForm.n_writer.value = schGul.writer;
                 myForm.n_cont.value = schGul.cont.replaceAll("+"," "); // 사실 여기서 하는 건 좋지 않음..
                 
+                //체크박스 체크 구현
+                //체크박스 전체 클리어 
+                var ckBoxes = document.querySelectorAll("input[type=checkbox]");
+                for(var ckBox of ckBoxes){
+                    ckBox.checked = false;
+                }
+                //필요한 것만 체크
+                for(var ckVal of schGul.skills){
+                    document.querySelectorAll(`[type=checkbox][value=${ckVal}]`).checked=true;
+                }
+
                 f_modalOpen();
                 break; /* 더 이상 찾을 필요 없음 1개니까!*/ /* return은 함수 안에서만 쓸 수 있음 */
             }
@@ -162,7 +194,8 @@
 
 
     var tblStr = "<table border=1>";
-        tblStr += "<tr><th>PID</th><th>제목</th><th>글쓴이</th><th>스킬</th></tr>";
+        tblStr += `<tr><th>PID</th><th>제목</th><th>글쓴이</th><th>스킬</th>
+                   <th>삭제</th><th><button>선택된 것만 삭제</button></th></tr>`;
     
     for(var i=startIndex; i<endIndex; i++) {
         console.log("체크 :", i);
@@ -174,6 +207,8 @@
                         <td><a href="#" onclick="f_readGul(${gul.pid})">${gul.title}</a></td>
                         <td>${gul.writer}</td>
                         <td>${gul.skills}</td>
+                        <td><button onclick="f_del()">삭제</button></td>
+                        <td><input type=checkbox value=""></td>
                     </tr>
         `;
     }
