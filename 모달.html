@@ -31,12 +31,25 @@
 </style>
 </head>
 <body>
-    <!-- 나만의 모달 -->
+    <!-- 나만의 모달, 부트스트랩 가져다 쓰면 가성비 제로! 시간 낭비! -->
     <!-- 모달은 웬만하면 바깥쪽에 생성하여 나중에라도 가져다 쓸 수 있도록!! -->
     <div id="myModal">
         <div id="myCont">
-            <h1>당신은 지각대장 입니까?</h1>
-            <button>응!!!!!</button><button onclick="f_modalClose()">아닐껄?!!!!!</button>
+            <form action="write_action.html" method="get">
+                제목 : <input type="text" name="n_title" value="" required><br>
+                글쓴이 : <input type="text" name="n_writer" value="" required><br>
+                <hr>
+                스킬<br>
+                JS<input type="checkbox" name="n_skill" value="js">
+                JAVA<input type="checkbox" name="n_skill" value="java">
+                SPRING<input type="checkbox" name="n_skill" value="spring" checked>
+                CSS<input type="checkbox" name="n_skill" value="css">
+                ORACLE<input type="checkbox" name="n_skill" value="oracle"><br>
+                내용<br>
+                <textarea name="n_cont" id="" cols="30" rows="10" required></textarea><br>
+        
+                <input type="submit" value="쓰기">
+            </form>
         </div>
     </div>
 
