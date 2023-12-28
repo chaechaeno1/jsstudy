@@ -6,6 +6,21 @@
 //처리된다는 말에 순수 자바스크립트(바닐라)에선 그냥 function 키워드를 더 많이 씀
 //만약 마이크로소프트의 typescript를 쓴다면 이야기가 다름(class 키워드 써야함) (transFiler, 컴파일해주는 것)
 
+// 💥function 키워드를 class의 의미로 사용하기💥
+// (중요, 연봉 오르고, 최신 프론트 프레임워크사용에 남들보다 빨리 진출)
+function Saram(){
+    this.name = "서운";
+    this.age = 20;
+    return this; //생략되어 있음, 
+    //그냥 function으로 쓸 때와 차이?
+    //키워드는 function이지만 쓰임새는 class 인 것!
+}
+
+var 송시운 = new Saram();
+console.log(송시운);
+
+var 강민택 = new Saram();
+console.log(강민택);
 
 
 
