@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>무한스크롤2</title>
+<style>
+    #list{
+        height:300px; /* 높이를 제한 */
+        border: 1px solid black;
+        /* overflow: hidden; */
+        overflow: auto;
+    }
+</style>
+</head>
+<body>
+    <h1>DIV에 무한스크롤 걸기</h1>
+    <div id="list">
+        <h1>난 최고의 개발자다! 안 졸리다!</h1>
+        <h1>난 최고의 개발자다! 안 졸리다!</h1>
+        <h1>난 최고의 개발자다! 안 졸리다!</h1>
+        <h1>난 최고의 개발자다! 안 졸리다!</h1>
+        <h1>난 최고의 개발자다! 안 졸리다!</h1>
+        <h1>난 최고의 개발자다! 안 졸리다!</h1>
+    </div>
+<script>
+    //결론은 그냥 열심히 하면 잘 된다! 인생 고생 총합의 법칙
+    var myList = document.querySelector("#list");
+
+    myList.scrollTo(0,0); //스크롤바 처음으로 이동!
+    //윈도우 스크롤바 제어할때만 setTimeout 필요!
+
+    function f_scroll(){
+        var scrollTop = myList.scrollTop;
+        var clientHeight = myList.clientHeight;
+        var scrollHeight = myList.scrollHeight;
+
+        var tunningVal = 50;
+        if( (scrollTop + clientHeight) >= (scrollHeight - tunningVal) ){
+            //여기에 못생긴 게시판 10개씩 가져오기 해보면 아주 좋음!
+
+            for(var i=1; i<=6; i++){
+                var htag = document.createElement("h" + i);
+                htag.innerHTML = "무한스크롤";
+                myList.appendChild(htag);
+            }
+        }
+    }
+
+    myList.addEventListener("scroll",f_scroll);
+</script>
+</body>
+</html>
+
+

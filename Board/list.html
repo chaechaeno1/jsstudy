@@ -102,12 +102,12 @@
         }
 
         //단일 삭제 버튼
-        function f_delList(pId) {
+        function f_delList(pid) {
             var gulList = JSON.parse(localStorage.getItem("myGesi")); //배열로 변경
 
             for (var i = 0; i < gulList.length; i++) {
                 var gul = gulList[i];
-                if (gul.pid == pId) { //찾았다!
+                if (gul.pid == pid) { //찾았다!
                     gulList.splice(i, 1); //해당 인덱스 1개를 지운다!
                     break; // 빼먹는 경우가 많음! -> 성능 저하를 일으킴...
                 }
@@ -119,7 +119,7 @@
 
             location.href = "list.html";
         }
-
+/* 
         //체크박스 선택 후 삭제버튼
         function f_delChk() {
             // 체크된 체크박스들을 모두 가져옴
@@ -152,7 +152,7 @@
             location.href = "list.html";
         }
 
-
+ */
 
 
 
