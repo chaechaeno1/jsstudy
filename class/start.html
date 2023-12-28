@@ -8,20 +8,36 @@
 
 // 💥function 키워드를 class의 의미로 사용하기💥
 // (중요, 연봉 오르고, 최신 프론트 프레임워크사용에 남들보다 빨리 진출)
-function Saram(){
-    this.name = "서운";
-    this.age = 20;
+function Saram(pName, pAge){ //생성자(constructor)라고도 부름
+    this.name = pName;
+    this.age = pAge;
+
+/*  메소드를 이렇게 만들면 각자 메소드를 가짐, 상황에 따라 메모리 낭비라고도 볼 수 있음
+    this.getAge = function(){
+        return this.age;
+    }
+ */
+
     return this; //생략되어 있음, 
     //그냥 function으로 쓸 때와 차이?
     //키워드는 function이지만 쓰임새는 class 인 것!
 }
 
-var 송시운 = new Saram();
+// 메소드 선언은 명시적으로 prototype에 넣어주어야 
+// 해당 class에서 생성된 객체끼리 공유됨!!
+
+Saram.prototype.getAge = function(){ /* 이걸 받아들이면 이야기가 많이 쉬워짐! */
+    return this.age;
+}
+
+
+var 송시운 = new Saram("서운",20);
 console.log(송시운);
+console.log(송시운.getAge());
 
-var 강민택 = new Saram();
+var 강민택 = new Saram("민택",25);
 console.log(강민택);
-
+console.log(강민택.getAge());
 
 
 </script>
