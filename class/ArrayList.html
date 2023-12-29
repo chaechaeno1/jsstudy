@@ -2,49 +2,63 @@
 <meta charset="UTF-8">
 <script>
     // 자바의 ArrayList 만들어 보기
-    function ArrayList(){
+    function ArrayList() {
         this.length = 0;
         return this; // 생략해도 무방, new를 써서 생성되는 것은 이게 생략되어 있는 것!
     }
 
     //💥 prototype 명시! .. add메소드
-    ArrayList.prototype.add = function(pArg){
+    ArrayList.prototype.add = function (pArg) {
         //배열식 접근법
         this[this.length] = pArg;
         this.length++;
         //return; //일반 함수에는 마지막에 return이 생략되어있음
         return this; // 메소드 체인닝 완성!
     }
-    
+
     // get -> 읽기
-    ArrayList.prototype.get = function(pIndex){
+    ArrayList.prototype.get = function (pIndex) {
         return this[pIndex]; // 보통 읽기 동작에는 메소드 체인닝을 구현하지 않음, 당연한 이야기..!
     }
 
     // set -> 덮어쓰기
-    ArrayList.prototype.set = function(pIndex, pVal){
+    ArrayList.prototype.set = function (pIndex, pVal) {
         this[pIndex] = pVal;
         return this; // 메소드 체인닝 완성!
     }
 
-    ArrayList.prototype.size = function(){
+    ArrayList.prototype.size = function () {
         return this.length;
     }
 
     //졸음을 쫓아낼 문제...! 
     //인덱스 속성을 순서대로 정비할 필요가 생김
     //중간이 비면 반복문 쓰는데 어려움 
-    ArrayList.prototype.remove = function(pIndex){
+/*     
+    ArrayList.prototype.remove = function (pIndex) {
         // 삭제할 때 : 배열 splice, 객체 delete
         delete this[pIndex];
         this.length--;  //1개 지웠으니까, 1개 감소
         return this;    //메소드 체인닝 
     }
 
-    ArrayList.prototype.clear = function(){
-        
+ */ 
+    ArrayList.prototype.remove = function (pIndex) {
+        if (pIndex >= 0 && pIndex < this.length) {
+            for (var i = pIndex; i < this.length - 1; i++) {
+                this[i] = this[i + 1];
+            }
+            delete this[this.length - 1];
+            this.length--; //1개 지웠으니까, 1개 감소
+        }
+        return this; //메소드 체인닝
     }
-
+    /* 
+        ArrayList.prototype.clear = function(){
+            delete this;
+            return this;
+        }
+     */
 
 
     var myList = new ArrayList();
@@ -53,16 +67,16 @@
 
     //myList.add("민지현").add("한동욱").add("김영진"); //메소드 체인닝을 쓰고싶다!
     //alert(myList.add("민지현").add("한동욱").add("김영진").set(1,"메롱").get(1)); 
-    myList.add("민지현").add("한동욱").add("김영진").set(1,"메롱").get(1); 
+    myList.add("민지현").add("한동욱").add("김영진").set(1, "메롱").get(1);
     // myList.add("민지현");
     // myList.add("한동욱");
-    
-    console.log(structuredClone(myList));
-    
-    myList.remove(1); // 잠을 많이 잔 동욱 삭제
-    myList.clear(); // 리스트의 모든 값 삭제
-    myList.remove(list.indexOf(1)); 
+
     console.log(structuredClone(myList));
 
-    
+    myList.remove(1); // 잠을 많이 잔 동욱 삭제
+    //myList.clear(); // 리스트의 모든 값 삭제
+    //myList.remove(myList.indexOf(1)); 
+    console.log(structuredClone(myList));
+
+
 </script>

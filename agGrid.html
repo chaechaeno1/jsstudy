@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ag-Grid Basic Example</title>
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+</head>
+<body>
+    <div id="myGrid" style="height: 200px; width:550px;" class="ag-theme-alpine"></div>
+<script>
+const columnDefs = [
+  { field: "make",  headerName:"메이커", /* filter:true, resizable:true */},
+  { field: "model", headerName:"모델", /* filter:true, resizable:true */},
+  { field: "price", headerName:"가격", /* filter:true, resizable:true */}
+];
+
+// 데이타 정의
+const rowData = [
+  { make: "Toyota", model: "Celica", price: 35000 },
+  { make: "Ford", model: "Mondeo", price: 32000 },
+  { make: "Porsche", model: "Boxster", price: 72000 }
+];
+
+// 💥설정 옵션: 중요, 위에 정의한 것들이 여기서 통합됨에 주목
+// const gridOptions = {
+//   columnDefs: columnDefs,
+//   rowData: rowData
+// };
+
+const gridOptions = {
+  columnDefs: columnDefs,
+  rowData: rowData,
+  defaultColDef: { //모든 컬럼에 적용할 공통 속성
+    sortable:true,
+    filter:true,
+    resizable:true,
+    minWidth:100
+  }
+};
+
+// 그리드 셋업
+// load vs DOMcontentLoaded
+// html에 이미지가 없으면 둘다 같음
+// 태그만 다 해석되었을 때 발생하는게 DOMcontentLoaded -> 속도 빠름
+// 속도때문에 일단 DOMcontentLoaded 사용
+document.addEventListener('DOMContentLoaded', () => {
+  const gridDiv = document.querySelector('#myGrid');
+  new agGrid.Grid(gridDiv, gridOptions);
+});    
+</script>
+</body>
+</html>
