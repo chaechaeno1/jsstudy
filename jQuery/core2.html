@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<body>
+    <div class="mch">민채 헤어스타일 고침1</div>
+    <div class="mch">민채 헤어스타일 고침2</div>
+    <div class="mch">민채 헤어스타일 고침3</div>
+    <div class="mch">민채 헤어스타일 고침4</div>
+</body>
+<script>
+    (function () {
+        // 괜히 new를 없애주면 편하게 쓸 것 같음!        
+        var $ = function $(pSel) {
+            return new myDom(pSel);
+        }
+        // class로 쓸 myDom
+        function myDom(pSel) {
+            var elems = document.querySelectorAll(pSel);
+            //옮겨담기
+            this.length = elems.length; //length 속성 지정
+            for (let i = 0; i < this.length; i++) { // 옮겨담기, 배열식 접근법
+                this[i] = elems[i];
+            }
+            return this; //생략가능, class의 의미로 쓰는 function 키워드는 이게 생략되어 있음
+        }
+
+        window.$ = $; // 자주 보면 맘이 편함
+
+        $.fn = myDom.prototype; // myDom.prototype을 즉각실행함수 바깥에서 $.fn으로 접촉 가능 
+
+    })();
+    $.fn.eq = function (pIndex) {
+        return this[pIndex];
+    }
+
+
+    $.fn.html = function (pArg) { //매개변수 1개만 있으면 됨!!
+
+        if (!pArg) { //false값이라면?
+            return this[0].innerHTML;
+        }
+
+        if (typeof (pArg) == "string") {
+            for (var i = 0; i < this.length; i++) {
+                this[i].innerHTML = pArg;
+            }
+            return this; //메소드 체인닝을 위해 객체 자신을 리턴
+        }
+
+
+        if (typeof (pArg) == "function") {
+            for (var i = 0; i < this.length; i++) {
+
+                this[i].innerHTML = pArg.call(this[i], i, this[i].innerHTML); //콜백함수의 리턴값을 활용
+            }
+            return this; //메소드 체인닝을 위해 객체 자신을 리턴
+        }
+        return this; //해당사항 없을 때도, 메소드 체인닝 지원
+    }
+
+
+    var myMC3 = $(".mch");
+
+    //console.log("눈으로 꼭 확인:",myMC3.html("메롱!"));
+
+    myMC3.html(function (pIndex, pHTML) {
+        console.log("this는 ", this); //window 찍힘
+
+        if (pIndex == 1) {
+            return "<h1>민채 만만세~!!!</h1>";
+        };
+        return pHTML; //해당 사항 없는 애들은 원래 값 그대로 출력
+
+    }).html(function(pIndex,pHTML){ //메소드 체인닝!
+        if(pIndex == 3){
+            return "<h1>더 이상 칭찬할 게 없는 민채...ㅠ</h1>";
+        }
+
+        return pHTML;
+    });
+
+
+
+</script>
