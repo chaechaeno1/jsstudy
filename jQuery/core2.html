@@ -6,6 +6,15 @@
     <div class="mch">민채 헤어스타일 고침2</div>
     <div class="mch">민채 헤어스타일 고침3</div>
     <div class="mch">민채 헤어스타일 고침4</div>
+
+
+    <!-- 
+        name=value 형태는 attr 메소드
+        checked 처럼 혼자만 오는 속성은 prop 메소드
+    -->
+    <input type="checkbox" checked>
+    <input type="text" value="메롱" readonly>
+
 </body>
 <script>
     (function () {
@@ -173,6 +182,19 @@
 
         return pHTML;
     });
+
+
+    // 💥 attr vs prop
+    // <input type="checkbox" checked>
+    // <input type="text" value="메롱" readonly>
+    // attr -> 키,밸류 같이 있는 것
+    // prop -> 혼자 오는 것
+
+
+
+
+
+
 
 
     console.log("진짜 1개:", myMC3.eq(2)); // 이게 문제!!!!
