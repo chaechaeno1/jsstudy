@@ -15,6 +15,7 @@
         }
         // class로 쓸 myDom
         function myDom(pSel) {
+            this.pSel = pSel; //선택자를 저장해둠!
             var elems = document.querySelectorAll(pSel);
             //옮겨담기
             this.length = elems.length; //length 속성 지정
@@ -29,9 +30,28 @@
         $.fn = myDom.prototype; // myDom.prototype을 즉각실행함수 바깥에서 $.fn으로 접촉 가능 
 
     })();
-    $.fn.eq = function (pIndex) {
-        return this[pIndex];
+
+    //제이쿼리에서 eq 메소드 제인닝 가능
+    $.fn.eq = function (pIndex) { //이건 메소드 체인닝이 안될까?
+        //return this[pIndex]; //읽기 기능밖에 못함
+        console.log("디버깅:", this, this[pIndex]);
+        this[0] = this[pIndex]; //선택된 얘를 맨 앞으로 옮김!
+        for (var i = 1; i < this.length; i++) {
+            delete this[i]; //나머지를 버림
+        };
+        this.length = 1;    //선택된 애는 이제 1개!
+        return this; // 메소드 체인닝을 위해서 필요!!!
+
     }
+
+    //eq가 가지고 있는 걸 1개로 만들기 때문에, 원래 걸로 돌리는 메소드 
+    $.fn.end = function () {
+        //실제 jQuery는 모두 별도 저장해두고 있음(조금 무거워짐)!
+        //여기선 필요할 때 생성하는 걸로!
+        return $(this.pSel);    // 객체를 다시 생성해서 돌려줌
+    }
+
+
 
     //style 객체 제어 css 메소드
     //pArg1은 무조건 있어야 하고, pArg2가 없을 때(읽기), 문자열일때(전체쓰기), 함수일때(부분제어)
@@ -87,21 +107,50 @@
 
     }
 
+    //$.each와 헷갈리지 말기!
+    $.fn.each = function (pCb) {
+        for (var i = 0; i < this.length; i++) {
+            pCb.call(this[i], i, this[i]);
+        }
+        return this; //메소드 체인닝
+    }
+
+
+    //💥💥jQuery 사용 시 꼭 주의할 것 (이것으로 평가가 됨!, 제대로 이해하고 쓰는지..)
+    //메모리 낭비가 안되도록 꼭 변수로 받아서 사용하기
+    //한번에 여러개 처리하고 끝낼 땐 메소드 체인닝을 이용해야 함!
+    //var $myMC3 = $(".mch"); 변수명 앞에 $ 붙임 -> 제이쿼리 객체임을 명시
+
+    /* 아래와 같은 코드 절대 안들어가게! 그냥 탈락.. 둘다 똑같은거임..! 
+    $(document.ready(function(){
+        $(function(){});
+    }));
+
+    $(function(){
+        $(document.ready(function(){}));
+    });
+    */
+
     var myMC3 = $(".mch");
-    myMC3.css("color","blue") //전체 쓰기
-         .css("background-color","gray")
-         .css("color",function(pIndex,pVal){
-            if(pIndex == 1){
+
+    myMC3.each(function (pIndex, pElem) {
+        console.log("체크:", pIndex, pElem);
+    })
+
+    myMC3.css("color", "blue") //전체 쓰기
+        .css("background-color", "gray")
+        .css("color", function (pIndex, pVal) {
+            if (pIndex == 1) {
                 return "yellow";
             }
             return pVal; //나머진 그대로 출력
-         })
-         .css("color",function(pIndex,pVal){
-            if(pVal == "yellow"){
+        })
+        .css("color", function (pIndex, pVal) {
+            if (pVal == "yellow") {
                 return "black";
             }
             return pVal;
-         }).html("<h1>jQuery 정말 별거 없네용!</h1>")
+        }).html("<h1>jQuery 정말 별거 없네용!</h1>")
 
 
     //console.log("눈으로 꼭 확인:",myMC3.html("메롱!"));
@@ -114,7 +163,8 @@
         };
         return pHTML; //해당 사항 없는 애들은 원래 값 그대로 출력
 
-    }).html(function (pIndex, pHTML) { //메소드 체인닝!
+    //}).html(function (pIndex, pHTML) { //메소드 체인닝!
+    }).html((pIndex, pHTML) => { //메소드 체인닝!
         if (pIndex == 3) {
             return "<h1>더 이상 칭찬할 게 없는 민채...ㅠ</h1>";
         }
@@ -123,5 +173,19 @@
     });
 
 
+
+
+
+
+
+    console.log("진짜 1개:", myMC3.eq(2)); // 이게 문제!!!!
+    console.log("진짜 1개:", myMC3.eq(2).end()); // 이게 문제!!!!
+    /*     
+        myMC3.eq(2)
+            .html("<h1>나 누구게?</h1>")
+            .css("color","yellow")
+            .css("font-size","3em")
+            .css("background-color","black");
+     */
 
 </script>
