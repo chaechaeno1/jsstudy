@@ -33,6 +33,11 @@
         return this[pIndex];
     }
 
+    //style 객체 제어 css 메소드
+    //pArg1은 무조건 있어야 하고, pArg2가 없을 때(읽기), 문자열일때(전체쓰기), 함수일때(부분제어)
+
+
+
 
     $.fn.html = function (pArg) { //매개변수 1개만 있으면 됨!!
 
@@ -59,7 +64,45 @@
     }
 
 
+
+    $.fn.css = function (pArg1, pArg2) { //매개변수 2개 필요
+
+        if (!pArg2) {
+            return this[0].style[pArg1]; //배열식접근법
+        }
+
+        if (typeof (pArg2) == "string") {
+            for (var i = 0; i < this.length; i++) {
+                this[i].style[pArg1] = pArg2;
+            }
+            return this;
+        }
+
+        if (typeof (pArg2) == "function") {
+            for (var i = 0; i < this.length; i++) {
+                this[i].style[pArg1] = pArg2.call(this[i], i, this[i].style[pArg1]);
+            }
+            return this;
+        }
+
+    }
+
     var myMC3 = $(".mch");
+    myMC3.css("color","blue") //전체 쓰기
+         .css("background-color","gray")
+         .css("color",function(pIndex,pVal){
+            if(pIndex == 1){
+                return "yellow";
+            }
+            return pVal; //나머진 그대로 출력
+         })
+         .css("color",function(pIndex,pVal){
+            if(pVal == "yellow"){
+                return "black";
+            }
+            return pVal;
+         }).html("<h1>jQuery 정말 별거 없네용!</h1>")
+
 
     //console.log("눈으로 꼭 확인:",myMC3.html("메롱!"));
 
@@ -71,8 +114,8 @@
         };
         return pHTML; //해당 사항 없는 애들은 원래 값 그대로 출력
 
-    }).html(function(pIndex,pHTML){ //메소드 체인닝!
-        if(pIndex == 3){
+    }).html(function (pIndex, pHTML) { //메소드 체인닝!
+        if (pIndex == 3) {
             return "<h1>더 이상 칭찬할 게 없는 민채...ㅠ</h1>";
         }
 
