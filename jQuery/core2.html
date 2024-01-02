@@ -156,6 +156,7 @@
     //console.log("눈으로 꼭 확인:",myMC3.html("메롱!"));
 
     myMC3.html(function (pIndex, pHTML) {
+        alert("체크1:"+this);
         console.log("this는 ", this); //window 찍힘
 
         if (pIndex == 1) {
@@ -164,18 +165,14 @@
         return pHTML; //해당 사항 없는 애들은 원래 값 그대로 출력
 
     //}).html(function (pIndex, pHTML) { //메소드 체인닝!
-    }).html((pIndex, pHTML) => { //메소드 체인닝!
+    }).html(function(pIndex, pHTML){ //메소드 체인닝!
+        alert("체크2:"+this); //💥💥꼭 주의! this 쓸거면 화살표 함수를 그냥 function으로 써라!
         if (pIndex == 3) {
             return "<h1>더 이상 칭찬할 게 없는 민채...ㅠ</h1>";
         }
 
         return pHTML;
     });
-
-
-
-
-
 
 
     console.log("진짜 1개:", myMC3.eq(2)); // 이게 문제!!!!
